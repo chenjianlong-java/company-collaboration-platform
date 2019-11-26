@@ -7,6 +7,7 @@ import {CoreModule} from './core/core.module';       // 如果命名为index后�
 import {SharedModule} from './shared/shared.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {HttpClientModule} from '@angular/common/http';
+import {LoginModule} from './login/login.module';
 
 @NgModule({
     declarations: [
@@ -18,7 +19,8 @@ import {HttpClientModule} from '@angular/common/http';
         CoreModule,
         BrowserAnimationsModule,
         HttpClientModule,
-        SharedModule
+        SharedModule,
+        LoginModule
     ],
     providers: [],
     bootstrap: [AppComponent]

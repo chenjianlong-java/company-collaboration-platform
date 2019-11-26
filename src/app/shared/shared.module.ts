@@ -26,7 +26,6 @@ import {MatButtonModule, MatCardModule, MatIconModule, MatInputModule, MatSidena
         MatButtonModule,
         MatCardModule,
         MatInputModule
-    
     ]
 })
 export class SharedModule {
