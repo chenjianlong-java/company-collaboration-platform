@@ -1,7 +1,15 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
-import {MatButtonModule, MatCardModule, MatIconModule, MatInputModule, MatSidenavModule, MatToolbarModule} from '@angular/material';
+import {
+    MatButtonModule,
+    MatCardModule,
+    MatIconModule,
+    MatInputModule,
+    MatListModule,
+    MatSidenavModule,
+    MatToolbarModule
+} from '@angular/material';
 
 /**
  * @Description: 主要目的是把程序都需要的一些东西导入进来在导出出去,这样有哪里需要比如commonModule的话直接引入这个sharedModule就可以了
@@ -16,7 +24,8 @@ import {MatButtonModule, MatCardModule, MatIconModule, MatInputModule, MatSidena
         MatIconModule,
         MatButtonModule,
         MatCardModule,
-        MatInputModule
+        MatInputModule,
+        MatListModule,
     ],
     exports: [
         CommonModule,
@@ -25,7 +34,8 @@ import {MatButtonModule, MatCardModule, MatIconModule, MatInputModule, MatSidena
         MatIconModule,
         MatButtonModule,
         MatCardModule,
-        MatInputModule
+        MatInputModule,
+        MatListModule,
     ]
 })
 export class SharedModule {
