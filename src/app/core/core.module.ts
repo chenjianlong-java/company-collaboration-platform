@@ -14,7 +14,7 @@ import {loadSvgResources} from '../utils/svg.util';
     declarations: [HeaderComponent, FooterComponent, SidebarComponent],
     imports: [
         CommonModule,
-        SharedModule
+        SharedModule,
     ],
     exports: [
         HeaderComponent,

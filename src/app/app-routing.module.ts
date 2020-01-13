@@ -1,5 +1,5 @@
 import {NgModule} from '@angular/core';
-import {Routes, RouterModule} from '@angular/router';
+import {RouterModule, Routes} from '@angular/router';
 
 const routes: Routes = [
     // {path: '', redirectTo: 'login', pathMatch: 'full'} // full代表是如果斜杠后面什么都不放就会去login页面

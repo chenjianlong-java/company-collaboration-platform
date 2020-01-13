@@ -1,4 +1,4 @@
-import {Component, OnInit, EventEmitter, Output} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 
 @Component({
     selector: 'app-header',
@@ -8,9 +8,9 @@ import {Component, OnInit, EventEmitter, Output} from '@angular/core';
 export class HeaderComponent implements OnInit {
     
     @Output() toggle = new EventEmitter<void>();
+    @Output() toggleDarkTheme = new EventEmitter<boolean>();
     
-    constructor(
-    ) {
+    constructor() {
     }
     
     ngOnInit() {
@@ -18,5 +18,9 @@ export class HeaderComponent implements OnInit {
     
     openSidebar() {
         this.toggle.emit();
+    }
+    
+    onChange($event) {
+        this.toggleDarkTheme.emit($event);
     }
 }

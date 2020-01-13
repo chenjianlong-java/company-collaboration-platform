@@ -1,10 +1,16 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'company-collaboration-platform';
+    title = 'company-collaboration-platform';
+    darkTheme = false;
+    
+    switchTheme(dark) {
+        console.log(dark.checked);
+        this.darkTheme = dark.checked;
+    }
 }
