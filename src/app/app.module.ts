@@ -8,19 +8,24 @@ import {SharedModule} from './shared/shared.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {HttpClientModule} from '@angular/common/http';
 import {LoginModule} from './login/login.module';
+import {ProjectModule} from './project/project.module';
+import {FormsModule, ReactiveFormsModule, FormControl} from '@angular/forms';
 
 @NgModule({
     declarations: [
         AppComponent,
     ],
     imports: [
+        ProjectModule,
         BrowserModule,
         AppRoutingModule,
         CoreModule,
         BrowserAnimationsModule,
         HttpClientModule,
         SharedModule,
-        LoginModule
+        LoginModule,
+        FormsModule,
+        ReactiveFormsModule,
     ],
     providers: [],
     bootstrap: [AppComponent]
