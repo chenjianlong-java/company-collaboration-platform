@@ -9,7 +9,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {HttpClientModule} from '@angular/common/http';
 import {LoginModule} from './login/login.module';
 import {ProjectModule} from './project/project.module';
-import {FormsModule, ReactiveFormsModule, FormControl} from '@angular/forms';
+import {TaskModule} from './task/task.module';
 
 @NgModule({
     declarations: [
@@ -24,8 +24,7 @@ import {FormsModule, ReactiveFormsModule, FormControl} from '@angular/forms';
         HttpClientModule,
         SharedModule,
         LoginModule,
-        FormsModule,
-        ReactiveFormsModule,
+        TaskModule
     ],
     providers: [],
     bootstrap: [AppComponent]
