@@ -1,14 +1,15 @@
-<form>
+<form [formGroup]="form" (ngSubmit)="onSubmit(form,$event)">
     <mat-card>
         <mat-card-title>登录：</mat-card-title>
         <mat-card-content>
             <mat-form-field class="full-width">
-                <input matInput placeholder="您的Email">
+                <input matInput placeholder="您的Email" formControlName="email">
+                <mat-error>{{form.controls['email'].errors.emianNotValid}}</mat-error>
             </mat-form-field>
             <mat-form-field class="full-width">
-                <input matInput placeholder="您的密码">
+                <input matInput placeholder="您的密码" formControlName="password">
             </mat-form-field>
-            <button type="button" color="primary" mat-button mat-raised-button>登录</button>
+            <button type="submit" color="primary" mat-button mat-raised-button [disabled]="!form.valid">登录</button>
         </mat-card-content>
         <mat-card-actions class="text-right">
             <p>还没有账户? <a href="">注册</a></p>

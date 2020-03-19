@@ -3,7 +3,7 @@
                   [item]="project"
                   (onInvite)="launchInviteDialog()"
                   (onEdit)="launchUpdateDialg()"
-                  (onDel)="launchConfirmDailog()"
+                  (onDel)="launchConfirmDailog(project)"
 ></app-project-item>
 <button class="fab-button" mat-fab type="button" (click)="openNewProjectDialog()">
     <mat-icon>add</mat-icon>
