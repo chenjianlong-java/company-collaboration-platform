@@ -14,13 +14,6 @@
             <mat-form-field class="full-width">
                 <input matInput placeholder="重复输入您的密码" formControlName="repeat">
             </mat-form-field>
-            <!--            <mat-grid-list cols="6">-->
-            <!--                <mat-grid-tile *ngFor="let item of items">-->
-            <!--                    <div class="avatar">-->
-            <!--                        <mat-icon [svgIcon]="item"></mat-icon>-->
-            <!--                    </div>-->
-            <!--                </mat-grid-tile>-->
-            <!--            </mat-grid-list>-->
             <app-image-list-select
                     [useSvgIcon]="true"
                     cols="6"
@@ -31,10 +24,5 @@
             
             <button type="button" color="primary" mat-button mat-raised-button>注册</button>
         </mat-card-content>
-        <mat-card-actions class="text-right">
-            <p>还没有账户? <a href="">注册</a></p>
-            <p>忘记密码? <a href="">找回</a></p>
-        </mat-card-actions>
     </mat-card>
-
 </form>

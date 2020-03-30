@@ -45,4 +45,7 @@ export class ProjectInviteComponent implements OnInit {
         return this.options.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
     }
     
+    displayUser(user: { id: string; name: string }) {
+        return user ? user.name : '';
+    }
 }

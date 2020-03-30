@@ -12,7 +12,7 @@
             <button type="submit" color="primary" mat-button mat-raised-button [disabled]="!form.valid">登录</button>
         </mat-card-content>
         <mat-card-actions class="text-right">
-            <p>还没有账户? <a href="">注册</a></p>
+            <p>还没有账户? <a routerLink="/register">注册</a></p>
             <p>忘记密码? <a href="">找回</a></p>
         </mat-card-actions>
     </mat-card>
@@ -20,12 +20,12 @@
     <mat-card class="example-card">
         <mat-card-header>
             <mat-card-title>每日佳句</mat-card-title>
-            <mat-card-subtitle>学历代表过去，能力表现在，学习代表未来！渣油吧下伙子</mat-card-subtitle>
+            <mat-card-subtitle>{{quote.cn}}</mat-card-subtitle>
         </mat-card-header>
-        <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+        <img mat-card-image src="{{quote.pic}}" alt="Photo of a Shiba Inu">
         <mat-card-content>
             <p>
-                The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
+                {{quote.en}}
             </p>
         </mat-card-content>
     </mat-card>

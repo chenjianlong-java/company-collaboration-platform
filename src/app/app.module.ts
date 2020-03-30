@@ -10,6 +10,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {LoginModule} from './login/login.module';
 import {ProjectModule} from './project/project.module';
 import {TaskModule} from './task/task.module';
+import {ServicesModule} from './services';
 
 @NgModule({
     declarations: [
@@ -24,7 +25,8 @@ import {TaskModule} from './task/task.module';
         HttpClientModule,
         SharedModule,
         LoginModule,
-        TaskModule
+        TaskModule,
+        ServicesModule.forRoot()
     ],
     providers: [],
     bootstrap: [AppComponent]

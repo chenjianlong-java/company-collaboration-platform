@@ -17,3 +17,10 @@
   bottom: 96px;
   z-index: 998;
 }
+
+.square {
+  $width: 300px;
+  width: $width;
+  height: $width;
+  background-color: #dadea4;
+}

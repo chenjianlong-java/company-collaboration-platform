@@ -1,6 +1,8 @@
 import {Directive, ElementRef, HostListener, Input, Renderer2} from '@angular/core';
 import {DragDropService} from '../drag-drop.service';
 
+// 参数1：指令名称 定义指令的时候附带输入
+// 参数2+：输入型属性
 @Directive({
     selector: '[app-draggable][dragTag][draggedClass][dragData]'
 })
@@ -26,7 +28,7 @@ export class DragDirective {
     
     @HostListener('dragstart', [`$event`])
     onDragSart(ev: Event) {
-        if (this.el.nativeElement === ev.target) {
+        if (this.el.nativeElement === ev.target) {  // 确保是元素自身发起的拖拽
             this.rd.addClass(this.el.nativeElement, this.draggedClass);
             this.dragAndDropSV.setDragData({tag: this.dragTag, data: this.dragData});
         }

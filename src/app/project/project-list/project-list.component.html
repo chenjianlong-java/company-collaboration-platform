@@ -5,7 +5,12 @@
                   (onEdit)="launchUpdateDialg()"
                   (onDel)="launchConfirmDailog(project)"
 ></app-project-item>
+
 <button class="fab-button" mat-fab type="button" (click)="openNewProjectDialog()">
     <mat-icon>add</mat-icon>
 </button>
 
+
+<div class="square" [@square]="state" (click)="changShape()">
+
+</div>

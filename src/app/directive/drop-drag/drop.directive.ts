@@ -33,6 +33,7 @@ export class DropDirective {
     
     @HostListener('dragover', ['$event'])
     onDragOver(ev: Event) {
+        // 防止多级冒泡和事件传递
         ev.preventDefault();
         ev.stopPropagation();
         if (this.el.nativeElement === ev.target) {

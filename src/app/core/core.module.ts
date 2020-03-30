@@ -20,7 +20,16 @@ import {loadSvgResources} from '../utils/svg.util';
         HeaderComponent,
         FooterComponent,
         SidebarComponent
-    ]
+    ],
+    providers: [
+        {
+            provide: 'BASE_CONFIG',
+            useValue: {
+                uri: 'http://localhost:3000'
+                // uri: 'http://manage.t.imooc.io/apis',
+            }
+        }
+    ],
 })
 export class CoreModule {
     // 两个注解是防止循环调用和第一次的时候可以调用
