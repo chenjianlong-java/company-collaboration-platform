@@ -4,6 +4,7 @@ import {Observable} from 'rxjs';
 import {Quote} from '../domain/quote.model';
 import {map} from 'rxjs/operators';
 
+
 @Injectable()
 export class QuoteService {
     // private uri: string = 'https://api.hzy.pw/saying/v1/ciba';

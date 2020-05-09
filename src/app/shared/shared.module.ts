@@ -9,13 +9,14 @@ import {
     MatSidenavModule,
     MatSlideToggleModule,
     MatToolbarModule,
-    MatGridListModule, MatDialogModule
+    MatGridListModule, MatDialogModule, MatDatepickerModule, MatButtonToggleModule
 } from '@angular/material';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ConfirmDialogComponent} from './confirm-dialog/confirm-dialog.component';
 import {DirectiveModule} from '../directive/directive.module';
 import 'rxjs/operators';
 import { ImageListSelectComponent } from './image-list-select/image-list-select.component';
+import { DateInputComponent } from './date-input/date-input.component';
 
 
 /**
@@ -23,7 +24,7 @@ import { ImageListSelectComponent } from './image-list-select/image-list-select.
  *               以后大家共享的组件也可以放在这里
  */
 @NgModule({
-    declarations: [ConfirmDialogComponent, ImageListSelectComponent],
+    declarations: [ConfirmDialogComponent, ImageListSelectComponent, DateInputComponent],
     entryComponents: [ConfirmDialogComponent],
     imports: [
         CommonModule,
@@ -40,6 +41,8 @@ import { ImageListSelectComponent } from './image-list-select/image-list-select.
         ReactiveFormsModule,
         MatDialogModule,
         DirectiveModule,
+        MatDatepickerModule,
+        MatButtonToggleModule,
     ],
     exports: [
         CommonModule,
@@ -56,6 +59,7 @@ import { ImageListSelectComponent } from './image-list-select/image-list-select.
         ReactiveFormsModule,
         DirectiveModule,
         ImageListSelectComponent,
+        DateInputComponent,
     ],
 })
 export class SharedModule {

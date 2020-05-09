@@ -21,7 +21,7 @@ export class LoginComponent implements OnInit {
     constructor(private fb: FormBuilder,
                 private quoteSV: QuoteService
     ) {
-        // this.quoteSV.getQuote().subscribe(r => this.quote = r);
+        this.quoteSV.getQuote().subscribe(r => this.quote = r);
         
     }
     
