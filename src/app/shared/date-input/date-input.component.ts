@@ -44,7 +44,7 @@ export class DateInputComponent implements ControlValueAccessor {
     ];
     dateOfBirth;
     @Input() daysTop = 90;
-    @Input() daysBottom = 0;
+    @Input() daysBottom = 1;
     @Input() monthsTop = 24;
     @Input() monthsBottom = 1;
     @Input() yearsBottom = 1;
