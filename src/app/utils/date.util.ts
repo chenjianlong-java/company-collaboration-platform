@@ -5,8 +5,6 @@ export const isValidDate = (val: string) => {
     return isDate(date) && isValid(date) && !isFuture(date);
 };
 
-export const toDate = (date: Date) => {
-    console.log(format(date, 'yyyy-MM-dd'), date);
-    
+export const toDateStr = (date: Date) => {
     return format(date, 'yyyy-MM-dd');
 };

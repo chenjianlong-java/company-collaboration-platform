@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "concurrently  \"npm run json-server\" \"ng serve --port=4200\"",
+    "start": "concurrently  \"npm run json-server\" \"ng serve --port=4200 --open\"",
     "json-server": "json-server ./src/mock/data.json",
     "build": "ng build",
     "test": "ng test",

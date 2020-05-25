@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, forwardRef, Input} from '@angular/core';
+import {ChangeDetectorRef, Component, forwardRef, Input} from '@angular/core';
 import {combineLatest, merge, Subscription} from 'rxjs';
 import {
 	ControlValueAccessor,
@@ -8,19 +8,9 @@ import {
 	NG_VALIDATORS,
 	NG_VALUE_ACCESSOR
 } from '@angular/forms';
-import {isValidDate, toDate} from '../../utils/date.util';
-import {
-	differenceInDays,
-	differenceInMonths,
-	differenceInYears,
-	format,
-	isBefore,
-	parse,
-	subDays,
-	subMonths,
-	subYears
-} from 'date-fns';
-import {debounce, debounceTime, distinct, distinctUntilChanged, filter, map, startWith} from 'rxjs/operators';
+import {isValidDate, toDateStr} from '../../utils/date.util';
+import {format, subDays, subMonths, subYears} from 'date-fns';
+import {debounceTime, distinctUntilChanged, filter, map, startWith, tap} from 'rxjs/operators';
 
 export enum AgeUnit {
 	Year = 0,
@@ -76,18 +66,21 @@ export class DateInputComponent implements ControlValueAccessor {
 	) {
 		
 		// 初始化日期
-		const initBirthday = this.dateOfBirth ? this.dateOfBirth : toDate(subYears(Date.now(), 30));
-		const initAgeWidthUnit = this.toAge(initBirthday);
+		const initBirthday = this.dateOfBirth ? this.dateOfBirth : toDateStr(subYears(Date.now(), 10));
+		// const initAgeNumberObj = this.toAge(initBirthday);
+		const initAgeNumberObj = {
+			age: 22,
+			unit: 2
+		}
+		
 		
 		this.form = this.fb.group({
-			birthday: ["2020-01-15"],
+			birthday: [initBirthday],
 			age: this.fb.group({
-				ageNum: ["dkjj"],
-				ageUnit: [initAgeWidthUnit.unit]
+				ageNum: [initAgeNumberObj.age],
+				ageUnit: [initAgeNumberObj.unit]
 			}, {validator: this.validateAge('ageNum', 'ageUnit')})
 		});
-		// console.log()
-		this.form.get('age').patchValue('kkkjj');
 	}
 	
 	ngOnInit() {
@@ -95,64 +88,81 @@ export class DateInputComponent implements ControlValueAccessor {
 		const birthday = this.form.get('birthday');
 		const ageNum = this.form.get('age').get('ageNum');
 		const ageUnit = this.form.get('age').get('ageUnit');
-		ageNum.patchValue(565, {emitEvent: false});
-		// birthday.patchValue('2020-01-18');
-	
-		// const birthday$ = birthday.valueChanges.pipe(
-		//     map(r => {
-		//         console.log('日期控件获取到值:', r);
-		//         return {date: r, from: 'birthday'};
-		//     }),
-		//     debounceTime(this.debounceTime),
-		//     distinctUntilChanged(),
-		//     filter(date => birthday.valid)
-		// );
-		//
-		//
-		// const ageNum$ = ageNum.valueChanges.pipe(
-		//     startWith(ageNum.value),
-		//     debounceTime(this.debounceTime),
-		//     distinctUntilChanged()
-		// );
-		//
-		// const ageUnit$ = ageUnit.valueChanges.pipe(
-		//     startWith(ageUnit.value),
-		//     debounceTime(this.debounceTime),
-		//     distinctUntilChanged()
-		// );
-		//
-		// const age$ = combineLatest(ageNum$, ageUnit$).pipe(
-		//     distinct(r => r[0]),
-		//     map((r: any) => {
-		//         return {date: r[0] * r[1], from: 'age'};
-		//     }),
-		//     filter(_ => this.form.get('age').valid)
-		// );
-		//
-		// const merged$ = merge(birthday$, age$).pipe(
-		//     filter(_ => this.form.valid),
-		//     // debug('[Age-Input][Merged]:')
-		// );
-		//
-		// this.subBirth = merged$.subscribe((r: any) => {
-		//     let age;
-		//     if (r.date) age = this.toAge(r.date);
-		//     if (r.from === 'birthday') {
-		//         if (age.age === ageNum.value && age.unit === ageUnit.value) {
-		//             return;
-		//         }
-		//         ageUnit.patchValue(age.unit, {emitEvent: false, emitModelToViewChange: true, emitViewToModelChange: true});
-		//         ageNum.patchValue(age.age, {emitEvent: false});
-		//         this.selectedUnit = age.unit;
-		//         this.propagateChange(r.date);
-		//     } else {
-		//         const ageToCompare = this.toAge(this.form.get('birthday').value);
-		//         if (age.age !== ageToCompare.age || age.unit !== ageToCompare.unit) {
-		//             this.form.get('birthday').patchValue(r.date, {emitEvent: false});
-		//             this.propagateChange(r.date);
-		//         }
-		//     }
-		// });
+		
+		const birthday$ = birthday.valueChanges.pipe(
+			map(r => {
+				// console.log('日期控件获取到值:', r);
+				return {date: r, from: 'birthday'};
+			}),
+			debounceTime(this.debounceTime),
+			distinctUntilChanged(),
+			filter(date => birthday.valid)
+		);
+		
+		
+		const ageNum$ = ageNum.valueChanges.pipe(
+			startWith(ageNum.value),
+			// debounceTime(this.debounceTime),
+			distinctUntilChanged()
+		);
+		
+		const ageUnit$ = ageUnit.valueChanges.pipe(
+			// map(r => {
+			// 	console.log(r);
+			// }),
+			startWith(ageUnit.value),
+			// debounceTime(this.debounceTime),
+			distinctUntilChanged()
+		);
+		
+		const age$ = combineLatest(ageNum$, ageUnit$).pipe(
+			// distinct(r => r[0]),
+			map((r: any) => {
+				// console.log(r);
+				return {date: r, from: 'age'};
+			}),
+			// filter(_ => this.form.get('age').valid)
+		);
+		
+		
+		const merged$ = merge(birthday$, age$).pipe(
+			filter(_ => this.form.valid),
+			tap(next => {
+				// console.log(next)
+			})
+		);
+		
+		// merged$.subscribe();
+		
+		this.subBirth = merged$.subscribe((r: any) => {
+			console.log('r', r);
+			if (r.from === 'age') {
+				// const ageToCompare = this.toAge(this.form.get('birthday').value);
+				// if (r.age !== ageToCompare.age || r.unit !== ageToCompare.unit) {
+				this.form.get('birthday').patchValue(this.toDate(r.date), {emitEvent: false});
+				// this.propagateChange(r.date);
+				// }
+			}
+			// if (r.from === 'birthday') {
+			// 	if (age.age === ageNum.value && age.unit === ageUnit.value) {
+			// 		return;
+			// 	}
+			// 	ageUnit.patchValue(age.unit, {
+			// 		emitEvent: false,
+			// 		emitModelToViewChange: true,
+			// 		emitViewToModelChange: true
+			// 	});
+			// 	ageNum.patchValue(age.age, {emitEvent: false});
+			// 	this.selectedUnit = age.unit;
+			// 	this.propagateChange(r.date);
+			// } else {
+			// 	const ageToCompare = this.toAge(this.form.get('birthday').value);
+			// 	if (age.age !== ageToCompare.age || age.unit !== ageToCompare.unit) {
+			// 		this.form.get('birthday').patchValue(r.date, {emitEvent: false});
+			// 		this.propagateChange(r.date);
+			// 	}
+			// }
+		});
 	}
 	
 	writeValue(obj: any): void {
@@ -176,45 +186,67 @@ export class DateInputComponent implements ControlValueAccessor {
 	}
 	
 	
-	private toAge(dateStr: any): Age {
-		
-		let date = parse(dateStr, 'yyyy-MM-dd', new Date());
-		console.log('日期:', date, dateStr);
-		// date = toD(dateStr);
-		// const date = new Date();
+	private toAge(age: Age) {
 		const now = new Date();
-		if (isBefore(subDays(now, this.daysTop), date)) {
-			return {
-				age: differenceInDays(now, date),
-				unit: AgeUnit.Day
-			};
-		} else if (isBefore(subMonths(now, this.monthsTop), date)) {
-			return {
-				age: differenceInMonths(now, date),
-				unit: AgeUnit.Month
-			};
-		} else {
-			return {
-				age: differenceInYears(now, date),
-				unit: AgeUnit.Year
-			};
-		}
+		// let date = parse(dateStr, 'yyyy-MM-dd', now);
+		// if (isBefore(subDays(now, this.daysTop), date)) {
+		// 	return {
+		// 		age: differenceInDays(now, date),
+		// 		unit: AgeUnit.Day
+		// 	};
+		// } else if (isBefore(subMonths(now, this.monthsTop), date)) {
+		// 	return {
+		// 		age: differenceInMonths(now, date),
+		// 		unit: AgeUnit.Month
+		// 	};
+		// } else {
+		// 	return {
+		// 		age: differenceInYears(now, date),
+		// 		unit: AgeUnit.Year
+		// 	};
+		// }
+		
+		// switch (age.unit) {
+		// 	case AgeUnit.Year: {
+		// 		return {
+		// 			age: differenceInDays(now, ),
+		// 			unit: AgeUnit.Day
+		// 		};
+		// 	}
+		// 	case AgeUnit.Month: {
+		// 		return {
+		// 			age: differenceInDays(now, date),
+		// 			unit: AgeUnit.Day
+		// 		};
+		// 	}
+		// 	case AgeUnit.Day: {
+		// 		return {
+		// 			age: differenceInDays(now, date),
+		// 			unit: AgeUnit.Day
+		// 		};
+		// 	}
+		// 	default: {
+		// 		return this.dateOfBirth;
+		// 	}
+		// }
+		
 	}
+	
 	
 	private toDate(age: Age): string {
 		const now = new Date();
-		switch (age.unit) {
+		switch (age[1]) {
 			case AgeUnit.Year: {
-				return toDate(subYears(now, age.age));
+				return toDateStr(subYears(now, age[0]));
 			}
 			case AgeUnit.Month: {
-				return toDate(subMonths(now, age.age));
+				return toDateStr(subMonths(now, age[0]));
 			}
 			case AgeUnit.Day: {
-				return toDate(subDays(now, age.age));
+				return toDateStr(subDays(now, age[0]));
 			}
 			default: {
-				return this.dateOfBirth;
+				return toDateStr(subDays(now, age[0]));
 			}
 		}
 	}
