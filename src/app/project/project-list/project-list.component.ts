@@ -4,6 +4,7 @@ import {NewProjectComponent} from '../new-project/new-project.component';
 import {ProjectInviteComponent} from '../project-invite/project-invite.component';
 import {ConfirmDialogComponent} from '../../shared/confirm-dialog/confirm-dialog.component';
 import {animate, keyframes, state, style, transition, trigger} from '@angular/animations';
+import {ProjectService} from "../../services/project.service";
 
 @Component({
     selector: 'app-project-list',
@@ -15,40 +16,28 @@ import {animate, keyframes, state, style, transition, trigger} from '@angular/an
             state('red', style({'background-color': 'red', 'height': '300px', 'transform': 'translateY(10%)'})),
             transition('green => red', animate('800ms cubic-bezier(.71,1.63,0,1.03)')),
             // transition('red => green', animate('800ms cubic-bezier(.71,1.63,0,1.03)'))
-            transition('red => green', animate(5000,keyframes([
-                style({transform:'translateY(100px)'}),
-                style({transform:'translateY(10px)'}),
-                style({transform:'translateY(100px)'}),
-                style({transform:'translateY(50px)'}),
-                style({transform:'translateY(200px)'}),
-                style({transform:'translateY(150px)'}),
-                style({transform:'translateY(10px)'}),
+            transition('red => green', animate(5000, keyframes([
+                style({transform: 'translateY(100px)'}),
+                style({transform: 'translateY(10px)'}),
+                style({transform: 'translateY(100px)'}),
+                style({transform: 'translateY(50px)'}),
+                style({transform: 'translateY(200px)'}),
+                style({transform: 'translateY(150px)'}),
+                style({transform: 'translateY(10px)'}),
             ])))
         ])
     ]
 })
 export class ProjectListComponent implements OnInit {
     
-    projects = [
-        {
-            id: 1,
-            name: '企业级开发平台',
-            desc: '这是一个企业内部项目',
-            coverImg: 'assets/img/covers/1.jpg'
-        },
-        {
-            id: 2,
-            name: '企业级开发平台',
-            desc: '这是一个企业内部项目',
-            coverImg: 'assets/img/covers/0.jpg'
-        }
-    ];
+    projects;
     private state: string = 'red';
     
-    constructor(private dialog: MatDialog) {
+    constructor(private dialog: MatDialog, private projectSV: ProjectService) {
     }
     
     ngOnInit() {
+        this.projectSV.get("37").subscribe(projects => this.projects = projects);
     }
     
     openNewProjectDialog() {
