@@ -17,7 +17,7 @@ export class ProjectService {
     ) {
     }
     
-    add(project: Project) {
+    add(project: Project): Observable<any> {
         project.id = null;  // 防止自己携带id
         const uri = `${this.config.uri}/${this.domain}`;
         return this.http.post(uri, JSON.stringify(project), {headers: this.headers});
@@ -26,17 +26,18 @@ export class ProjectService {
     update(project: Project) {
         const uri = `${this.config.uri}/${this.domain}/${project.id}`;
         const toUpdate = {
+            id: project.id,
             name: project.name,
-            deac: project.desc,
+            desc: project.desc,
             coverImg: project.coverImg
         }
         // httpClient不需要 map(res => res.json())
-        return this.http.post(uri, JSON.stringify(project), {headers: this.headers});
+        return this.http.patch(uri, JSON.stringify(toUpdate), {headers: this.headers});
     }
     
     del(project: Project): Observable<Project> {
         // 使用mergeMap是因为确保所删除一个tasklist的时候前边删除的tasklist流还能生效
-        const delTasks$ = from(project.taskLists).pipe(mergeMap(listId => {
+        const delTasks$ = from(project.taskLists ? project.taskLists : []).pipe(mergeMap(listId => {
             return this.http.delete(`${this.config.uri}/taskLists/${listId}`)
         }), count());
         // 用switch是因为count过来的时候就不需要关心我层了
@@ -46,8 +47,6 @@ export class ProjectService {
     
     get(userId: string): Observable<Project[]> {
         const uri = `${this.config.uri}/${this.domain}`;
-        return this.http.get(uri, {
-            params: {'members_like': userId}
-        }).pipe(map(r => r as Project[]));
+        return this.http.get(uri).pipe(map(r => r as Project[]));
     }
 }

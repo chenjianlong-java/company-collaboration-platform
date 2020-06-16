@@ -2,6 +2,7 @@ import {NgModule} from '@angular/core';
 import {QuoteService} from './quote.service';
 import {ProjectService} from "./project.service";
 import {TaskListService} from "./task-list.service";
+import {TaskService} from "./task.service";
 
 
 export {
@@ -16,7 +17,8 @@ export class ServicesModule {
             providers: [
                 QuoteService,
                 ProjectService,
-                TaskListService
+                TaskListService,
+                TaskService
             ]
         };
     }

@@ -2,7 +2,8 @@ import {Inject, Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Task} from "../domain/task.model";
 import {from, Observable} from "rxjs";
-import {mergeMap, map, switchMap, count, mapTo} from 'rxjs/operators';
+import {map, mapTo, mergeMap, reduce} from 'rxjs/operators';
+import {TaskList} from "../domain/task-list.model";
 
 
 @Injectable()
@@ -35,12 +36,12 @@ export class TaskService {
             remark: task.remark
         }
         // httpClient不需要 map(res => res.json())
-        return this.http.post(uri, JSON.stringify(task), {headers: this.headers});
+        return this.http.post(uri, JSON.stringify(toUpdate), {headers: this.headers});
     }
     
     del(task: Task): Observable<Task> {
         const uri = `${this.config.uri}/taskLists/${task.id}`;
-        // 用switch是因为count过来的时候就不需要关心我层了
+        // 用switch是因为count过来的时候就不需要关心外层了
         return this.http.delete(uri).pipe(mapTo(task));
     }
     
@@ -50,4 +51,28 @@ export class TaskService {
             params: {'taskListId': taskListId}
         }).pipe(map(r => r as Task[]));
     }
+    
+    getByLists(lists: TaskList[]): Observable<Task[]> {
+        return from(lists).pipe(
+            mergeMap(list => this.get(list.id)),
+            reduce((tasks: Task[], t: Task[]) => [...tasks, ...t], []));
+    }
+    
+    complete(task: Task): Observable<Task> {
+        const uri = `${this.config.uri}/${this.domain}/${task.id}`;
+        return this.http.post<Task>(uri, JSON.stringify({complete: task.completed}), {headers: this.headers});
+    }
+    
+    move(taskId: string, taskListId: string): Observable<Task> {
+        const uri = `${this.config.uri}/${this.domain}/${taskId}`;
+        return this.http.post<Task>(uri, JSON.stringify({taskListId: taskListId}), {headers: this.headers});
+    }
+    
+    moveAll(srcListId: string, targetListId: string): Observable<Task[]> {
+        return this.get(srcListId).pipe(
+            mergeMap(tasks => from(tasks)),
+            mergeMap(task => this.move(task.id, targetListId)),
+            reduce((arr: Task[], x: Task) => [...arr, x], []));
+    }
+    
 }
