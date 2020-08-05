@@ -8,6 +8,8 @@ import {SidebarComponent} from './sidebar/sidebar.component';
 import {MatIconRegistry} from '@angular/material';
 import {DomSanitizer} from '@angular/platform-browser';
 import {loadSvgResources} from '../utils/svg.util';
+import {StoreModule} from "@ngrx/store";
+import {counterReducer} from "../reducers/quote.reducer";
 
 
 @NgModule({
@@ -15,6 +17,7 @@ import {loadSvgResources} from '../utils/svg.util';
     imports: [
         CommonModule,
         SharedModule,
+        StoreModule.forRoot({quote: counterReducer})
     ],
     exports: [
         HeaderComponent,

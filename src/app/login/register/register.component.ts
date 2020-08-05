@@ -1,5 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {debounceTime, filter} from "rxjs/operators";
+import {extractInfo, getAddrByCode, isValidAddr} from "../../utils/identity.util";
+import {isValidDate} from "../../utils/date.util";
+import {Subscription} from "rxjs";
 
 export interface Tile {
     color: string;
@@ -24,6 +28,8 @@ export class RegisterComponent implements OnInit {
         {text: 'Three', cols: 1, rows: 1, color: 'lightpink'},
         {text: 'Four', cols: 2, rows: 1, color: '#DDBDF1'},
     ];
+    selectedTab = 0;
+    private _sub: Subscription;
     
     constructor(private fb: FormBuilder) {
     }
@@ -37,11 +43,37 @@ export class RegisterComponent implements OnInit {
             name: [],
             password: [],
             repeat: [],
-            avatar: [img]
+            avatar: [img],
+            dateOfBirth: [''],
+            address: ['', Validators.maxLength(80)],
+            identity: []
+        });
+        
+        // 452126199602102713
+        const id$ = this.form.get('identity').valueChanges.pipe(
+            debounceTime(300),
+            filter(r => {
+                return this.form.get('identity').valid
+            }));
+        
+        this._sub = id$.subscribe(id => {
+            const info = extractInfo(id.identityNo);
+            if (isValidAddr(info.addrCode)) {
+                const addr = getAddrByCode(info.addrCode);
+                this.form.patchValue({address: addr});
+                this.form.updateValueAndValidity({onlySelf: true, emitEvent: true});
+            }
+            if (isValidDate(info.dateOfBirth)) {
+                const date = info.dateOfBirth;
+                this.form.patchValue({dateOfBirth: date});
+                this.form.updateValueAndValidity({onlySelf: true, emitEvent: true});
+            }
         });
     }
     
     onSubmit(form: any, $event: any) {
-        
+    }
+    
+    onTabChange(index: number | ((name: string) => IDBIndex)) {
     }
 }

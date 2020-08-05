@@ -9,14 +9,21 @@ import {
     MatSidenavModule,
     MatSlideToggleModule,
     MatToolbarModule,
-    MatGridListModule, MatDialogModule, MatDatepickerModule, MatButtonToggleModule
+    MatGridListModule, MatDialogModule, MatDatepickerModule, MatButtonToggleModule, MatSelect
 } from '@angular/material';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ConfirmDialogComponent} from './confirm-dialog/confirm-dialog.component';
 import {DirectiveModule} from '../directive/directive.module';
 import 'rxjs/operators';
-import { ImageListSelectComponent } from './image-list-select/image-list-select.component';
-import { DateInputComponent } from './date-input/date-input.component';
+import {ImageListSelectComponent} from './image-list-select/image-list-select.component';
+import {DateInputComponent} from './date-input/date-input.component';
+import {ChipsListComponent} from './chips-list/chips-list.component';
+import {MatChipsModule} from "@angular/material/chips";
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
+import {IdentityInputComponent} from './identity-input/identity-input.component';
+import {AreaListComponent} from './area-list/area-list.component';
+import {MatSelectModule} from "@angular/material/select";
+import {MatTabGroup, MatTabsModule} from "@angular/material/tabs";
 
 
 /**
@@ -24,7 +31,7 @@ import { DateInputComponent } from './date-input/date-input.component';
  *               以后大家共享的组件也可以放在这里
  */
 @NgModule({
-    declarations: [ConfirmDialogComponent, ImageListSelectComponent, DateInputComponent],
+    declarations: [ConfirmDialogComponent, ImageListSelectComponent, DateInputComponent, ChipsListComponent, IdentityInputComponent, AreaListComponent],
     entryComponents: [ConfirmDialogComponent],
     imports: [
         CommonModule,
@@ -43,6 +50,10 @@ import { DateInputComponent } from './date-input/date-input.component';
         DirectiveModule,
         MatDatepickerModule,
         MatButtonToggleModule,
+        MatChipsModule,
+        MatAutocompleteModule,
+        MatSelectModule,
+        MatTabsModule,
     ],
     exports: [
         CommonModule,
@@ -60,6 +71,13 @@ import { DateInputComponent } from './date-input/date-input.component';
         DirectiveModule,
         ImageListSelectComponent,
         DateInputComponent,
+        MatChipsModule,
+        MatAutocompleteModule,
+        ChipsListComponent,
+        MatSelectModule,
+        MatTabsModule,
+        AreaListComponent,
+        IdentityInputComponent,
     ],
 })
 export class SharedModule {

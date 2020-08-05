@@ -1,7 +1,6 @@
-import {Component, OnInit} from '@angular/core';
-import {FormControl} from '@angular/forms';
-import {Observable} from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
+import {Component, Inject, OnInit} from '@angular/core';
+import {User} from "../../domain/user.model";
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 
 @Component({
     selector: 'app-project-invite',
@@ -10,42 +9,25 @@ import {map, startWith} from 'rxjs/operators';
 })
 export class ProjectInviteComponent implements OnInit {
     
-    items = [
-        {
-            id: 1,
-            name: 'zhangsan'
-        },
-        {
-            id: 2,
-            name: 'wangwu'
-        },
-        {
-            id: 3,
-            name: 'lisi'
-        }
-    ];
+    members: User[] = [];
+    dialogTitle: string;
     
-    myControl = new FormControl();
-    options: string[] = ['One', 'Two', 'Three'];
-    filteredOptions: Observable<string[]>;
-    
-    constructor() {
+    constructor(
+        @Inject(MAT_DIALOG_DATA) private data: any,
+        private dialogRef: MatDialogRef<ProjectInviteComponent>) {
     }
-    
     
     ngOnInit() {
-        this.filteredOptions = this.myControl.valueChanges.pipe(
-            startWith(''),
-            map(value => this._filter(value))
-        );
+        console.log("获取到值", this.data);
+        this.members = [...this.data.members];
+        this.dialogTitle = this.data.dialogTitle ? this.data.dialogTitle : '邀请成员';
     }
     
-    private _filter(value: string): string[] {
-        const filterValue = value.toLowerCase();
-        return this.options.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
-    }
-    
-    displayUser(user: { id: string; name: string }) {
-        return user ? user.name : '';
+    onSubmit(ev: Event, {value, valid}) {
+        ev.preventDefault();
+        if (!valid) {
+            return;
+        }
+        this.dialogRef.close(this.members);
     }
 }

@@ -1,0 +1,35 @@
+<mat-form-field appearance="fill">
+    <mat-label>请选择省份</mat-label>
+    <mat-select
+            [(ngModel)]="_address.province"
+            (selectionChange)="onProvinceChange()">
+        <mat-option *ngFor="let p of provinces" [value]="p">
+            {{ p }}
+        </mat-option>
+    </mat-select>
+</mat-form-field>
+<mat-form-field appearance="fill">
+    <mat-select
+            placeholder="请选择城市"
+            [(ngModel)]="_address.city"
+            (selectionChange)="onCityChange()">
+        <mat-option *ngFor="let c of cities$ | async" [value]="c">
+            {{ c }}
+        </mat-option>
+    </mat-select>
+</mat-form-field>
+<mat-form-field appearance="fill">
+    <mat-select
+            placeholder="请选择区县"
+            [(ngModel)]="_address.district"
+            (selectionChange)="onDistrictChange()">
+        <mat-option *ngFor="let d of districts$ | async" [value]="d">
+            {{ d }}
+        </mat-option>
+    </mat-select>
+</mat-form-field>
+<div class="street">
+    <mat-form-field class="full-width">
+        <input matInput placeholder="街道地址" [(ngModel)]="_address.street" (change)="onStreetChange()">
+    </mat-form-field>
+</div>

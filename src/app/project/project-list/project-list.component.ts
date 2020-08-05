@@ -5,11 +5,11 @@ import {ProjectInviteComponent} from '../project-invite/project-invite.component
 import {ConfirmDialogComponent} from '../../shared/confirm-dialog/confirm-dialog.component';
 import {animate, keyframes, state, style, transition, trigger} from '@angular/animations';
 import {ProjectService} from "../../services/project.service";
-import * as _ from 'lodash';
 import {listAnimation} from "../../anims/list.anim";
 import {filter, map, switchMap, take} from "rxjs/operators";
 import {Project} from "../../domain/project.model";
 import {Subscription} from "rxjs";
+import * as _ from 'lodash';
 
 @Component({
     selector: 'app-project-list',
@@ -58,7 +58,7 @@ export class ProjectListComponent implements OnInit, OnDestroy {
         const dialogRef = this.dialog.open(NewProjectComponent, {
             data: {
                 title: '新增项目',
-                thumbnails: this.getThumbnains(),
+                thumbnails: ProjectListComponent.getThumbnains(),
                 img: selectedImg
             }
         });
@@ -66,7 +66,7 @@ export class ProjectListComponent implements OnInit, OnDestroy {
         dialogRef.afterClosed().pipe(
             take(1),// 只娶一个，自动关闭
             filter(n => n),// n为布尔判断，为true就返回
-            map(val => ({...val, coverImg: this.buildImgSrc(val.coverImg)})),
+            map(val => ({...val, coverImg: ProjectListComponent.buildImgSrc(val.coverImg)})),
             switchMap(v => this.projectSV.add(v))
         ).subscribe(r => {
             this.projects = [...this.projects, r];
@@ -74,13 +74,13 @@ export class ProjectListComponent implements OnInit, OnDestroy {
     }
     
     launchInviteDialog() {
-        const dialogRef = this.dialog.open(ProjectInviteComponent);
+        const dialogRef = this.dialog.open(ProjectInviteComponent, {data: {members: []}});
     }
     
     launchUpdateDialg(project: Project) {
         const dialogRef = this.dialog.open(NewProjectComponent, {
             data: {
-                thumbnails: this.getThumbnains(),
+                thumbnails: ProjectListComponent.getThumbnains(),
                 project: project
             }
         });
@@ -88,7 +88,7 @@ export class ProjectListComponent implements OnInit, OnDestroy {
         dialogRef.afterClosed().pipe(
             take(1),// 只娶一个，自动关闭
             filter(n => n),
-            map(val => ({...val, id: project.id, coverImg: this.buildImgSrc(val.coverImg)})),
+            map(val => ({...val, id: project.id, coverImg: ProjectListComponent.buildImgSrc(val.coverImg)})),
             switchMap(v => this.projectSV.update(v))
         ).subscribe(r => {
             console.log(this.projects.map(p => p.id));
@@ -115,11 +115,11 @@ export class ProjectListComponent implements OnInit, OnDestroy {
         this.state = this.state == 'red' ? 'green' : 'red';
     }
     
-    private getThumbnains() {
+    private static getThumbnains() {
         return _.range(0, 40).map(i => `/assets/img/covers/${i}_tn.jpg`);
     }
     
-    private buildImgSrc(img: string): string {
+    private static buildImgSrc(img: string): string {
         return img.indexOf('_') > -1 ? img.split('_')[0] + '.jpg' : img;
     }
 }

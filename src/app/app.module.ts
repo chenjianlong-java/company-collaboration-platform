@@ -11,6 +11,7 @@ import {LoginModule} from './login/login.module';
 import {ProjectModule} from './project/project.module';
 import {TaskModule} from './task/task.module';
 import {ServicesModule} from './services';
+import { StoreModule } from '@ngrx/store';
 
 @NgModule({
     declarations: [
@@ -26,7 +27,8 @@ import {ServicesModule} from './services';
         SharedModule,
         LoginModule,
         TaskModule,
-        ServicesModule.forRoot()
+        ServicesModule.forRoot(),
+        StoreModule.forRoot({}, {})
     ],
     providers: [],
     bootstrap: [AppComponent]
